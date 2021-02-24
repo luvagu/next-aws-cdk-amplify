@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# CDK client keys
+cdk-exports.json
