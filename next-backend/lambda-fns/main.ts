@@ -4,7 +4,7 @@ import getPostById from './getPostById'
 import listPosts from './listPosts'
 import updatePost from './updatePost'
 import postsByUsername from './postsByUsername'
-import Post from './Posts'
+import Post from './Post'
 
 type AppSyncEvent = {
 	info: {

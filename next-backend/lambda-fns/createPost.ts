@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 const docClient = new AWS.DynamoDB.DocumentClient()
-import Post from './Posts'
+import Post from './Post'
 import { v4 as uuid } from 'uuid'
 
 async function createPost(post: Post, username: string) {
