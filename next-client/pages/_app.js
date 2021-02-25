@@ -6,26 +6,29 @@ import Link from 'next/link'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
-  const [signedInUser, setSignedInUser] = useState(false)
+	const [signedInUser, setSignedInUser] = useState(false)
 
-  useEffect(() => {
-    authListener()
-  })
+	useEffect(() => {
+		authListener()
+	})
 
-  async function authListener() {
-    Hub.listen('auth', (data) => {
-      switch (data.payload.event) {
-        case 'signIn':
-          return setSignedInUser(true)
-        case 'signOut':
-          return setSignedInUser(false)
-      }
-    })
-    try {
-      await Auth.currentAuthenticatedUser()
-      setSignedInUser(true)
-    } catch (err) {}
-  }
+	async function authListener() {
+		Hub.listen('auth', data => {
+			switch (data.payload.event) {
+				case 'signIn':
+					return setSignedInUser(true)
+				case 'signOut':
+					return setSignedInUser(false)
+			}
+		})
+
+		try {
+			await Auth.currentAuthenticatedUser()
+			setSignedInUser(true)
+		} catch (err) {
+      console.log(err)
+    }
+	}
 
 	return (
 		<div>
@@ -36,21 +39,23 @@ function MyApp({ Component, pageProps }) {
 				<Link href="/create-post">
 					<span style={linkStyle}>Create Post</span>
 				</Link>
-        {signedInUser && (
-          <Link href="/my-posts">
-            <span style={linkStyle}>My Posts</span>
-          </Link>
-        )}
+				{signedInUser && (
+					<Link href="/my-posts">
+						<span style={linkStyle}>My Posts</span>
+					</Link>
+				)}
 				<Link href="/profile">
-					<span style={linkStyle}>{signedInUser ? ('My Profile') : ('Sign Up')}</span>
+					<span style={linkStyle}>
+						{signedInUser ? 'My Profile' : 'Sign Up'}
+					</span>
 				</Link>
 			</nav>
 			<div style={bodyStyle}>
 				<Component {...pageProps} />
 			</div>
 			<footer>
-					Powered by Next.js {' '}
-					<img src="/vercel.svg" alt="Vercel Logo" className="logo" />
+				Powered by Next.js{' '}
+				<img src="/vercel.svg" alt="Vercel Logo" className="logo" />
 			</footer>
 		</div>
 	)
