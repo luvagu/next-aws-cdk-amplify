@@ -25,6 +25,7 @@ export default function Post({ post }) {
 
 export async function getStaticPaths() {
 	const postData = await API.graphql({ query: listPosts })
+
 	const paths = postData.data.listPosts.map(post => ({
 		params: { id: post.id },
 	}))
@@ -37,16 +38,20 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 	const { id } = params
-    
+
 	const postData = await API.graphql({
 		query: getPostById,
 		variables: { postId: id },
-	})
-
+	}
+    )
 	return {
 		props: {
 			post: postData.data.getPostById,
 		},
+		// Next.js will attempt to re-generate the page:
+		// - When a request comes in
+		// - At most once every second
+		revalidate: 1000, // adds Incremental Static Generation, sets time in seconds
 	}
 }
 
